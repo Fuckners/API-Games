@@ -30,7 +30,7 @@
     <button type="button" onclick="createGame()">Criar</button><br>
 
     
-    <h2>Editar game</h2>
+    <h2 id="editGame">Editar game</h2>
     <input type="text" id="id_edit" placeholder="ID do game"><br>
     <input type="text" id="title_edit" placeholder="Título"><br>
     <input type="number" min="1950" id="year_edit" placeholder="Ano de Lançamento"><br>
@@ -59,14 +59,14 @@
         try {
             const games = (await axios.get(link + 'games', axiosConfig)).data;
             const table = document.getElementById('games')
-            for (game of games) {
+            for (game of games.games) {
                 table.innerHTML +=   `<tr data-game="${game.id}">
                                         <td class="id">${game.id}</td>
                                         <td class="title">${game.title}</td>
                                         <td class="year">${game.year}</td>
                                         <td class="price">${game.price}</td>
                                         <td>
-                                            <button onclick="showInEdit(this)">Editar</button>
+                                            <a href="#editGame"><button onclick="showInEdit(this)">Editar</button></a>
                                             <button onclick="delGame(this)">Excluir</button>
                                         </td>
                                     </tr>`
@@ -83,14 +83,14 @@
         const year = document.getElementById('year_edit');
         const price = document.getElementById('price_edit');
         
-        const game = target.parentNode.parentNode.dataset.game
+        const game = target.parentNode.parentNode.parentNode.dataset.game
 
         try {
             const gameData = (await axios.get(link + 'game/' + game, axiosConfig)).data;
-            id.value = gameData.id;
-            title.value = gameData.title;
-            year.value = gameData.year;
-            price.value = gameData.price;
+            id.value = gameData.game.id;
+            title.value = gameData.game.title;
+            year.value = gameData.game.year;
+            price.value = gameData.game.price;
 
         } catch (error) {
             console.log(error);
