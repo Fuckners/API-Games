@@ -9,54 +9,51 @@ API exemplo para gestão de games.
 Responsável por gerar Token de autenticação.    
 
 #### Parâmetros    
-email: email cadastrado no sistema.
-password: senha cadastrada no sistema, referente ao email.
+email: email cadastrado no sistema.    
+password: senha cadastrada no sistema, referente ao email.    
 
 ```json
 {
     "email": "felipefclariano04@gmail.com",
     "password": "senha123"
 }
-```
+```    
 
 #### Respostas
-##### 200 - OK
+##### 200 OK!
 ```json
 {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmZWxpcGVmY2xhcmlhbm8wNEBnbWFpbC5jb20iLCJpYXQiOjE2NTYyOTM3MjMsImV4cCI6MTY1NjQ2NjUyM30.E37LjpU7mPTMMmYK-9eLyjaPQ2MbFSvLbBLWWR3rfnQ"
 }
 ```
 
-##### 400 - Email inválido ou ausente.
+##### 400 - Bad Request.
 ```json
 {
     "err": "Email inválido ou ausente."
 }
 ```
-
-##### 400 - Senha ausente.
 ```json
 {
     "err": "Senha ausente."
 }
 ```
 
-##### 404 - O email enviado não exite na base de dados.
-```json
-{
-    "err": "O email enviado não exite na base de dados."
-}
-```
-
-
-##### 401 - Credenciais inválidas
+##### 401 - Unauthorized.
 ```json
 {
     "err": "Credenciais inválidas."
 }
 ```
 
-##### 500 - Erro interno
+##### 404 - Not Found.
+```json
+{
+    "err": "O email enviado não exite na base de dados."
+}
+```
+
+##### 500 - Internal Server Error.
 ```json
 {
     "err": "Erro interno."
@@ -134,14 +131,168 @@ Nenhum
 ]
 ```
 
-##### 500 - Erro interno
+##### 500 - Internal Server Error.
 ```json
 {
     "err": "Erro interno."
 }
 ```
 
-#####
+***
 
+- ### GET /game/:id
+Responsável por retornar dados de um game específico.
 
-LEMBRAR DE RE UPAR OS ARQUIVOS
+#### Parametros
+:id - id do game que deseja ver os dados.    
+
+##### Exemplos
+`/game/4`    
+`/game/25`
+
+#### Respostas
+
+##### 200 OK!
+```json
+{
+    "id": 3,
+    "title": "Call of Dutty MW",
+    "year": "2019",
+    "price": 60,
+    "createdAt": "2022-06-22T23:41:56.000Z",
+    "updatedAt": "2022-06-22T23:41:56.000Z"
+}
+```
+
+##### 400 Invalid request.
+```json
+{
+    "err": "ID inválido"
+}
+```
+
+##### 404 - Not Found.
+```json
+{
+"err": "Game não encontrado."
+}
+```
+
+***
+
+- ### POST /game
+Responsável por cadastrar um game no database.
+
+#### Parametros
+title: Título do game    
+year: Ano de lançamento do game    
+price: Preço do jogo    
+
+```json
+{
+    "title": "League of Legends",
+    "year": "2009",
+    "price": 0
+}
+```
+
+#### Respostas
+
+##### 200 OK!
+undefined    
+
+##### 400 Bad Request.
+```json
+{
+    "err": "Título inválido ou ausente."
+}
+```
+```json
+{
+    "err": "Ano de lançamento inválido ou ausente."
+}
+```
+```json
+{
+    "err": "Preço inválido ou ausente."
+}
+```
+
+***
+
+- ### DELETE /game/:id
+Responsável por deletar um game específico do database.
+
+#### Parametros
+:id - id do game que deseja deletar.    
+
+##### Exemplos
+`/game/4`    
+`/game/25`
+
+#### Respostas
+
+##### 200 OK!
+undefined
+
+##### 400 Bad Request.
+```json
+{
+    "err": "ID inválido."
+}
+```
+
+##### 500 Internal Server Error.
+```json
+{
+    "err": "Erro interno."
+}
+```
+
+***
+
+- ### PUT /game/:id
+Responsável por editar games no database.
+
+#### Parametros
+:id - id do game que deseja editar.    
+
+##### Exemplos
+`/game/4`    
+`/game/25`
+
+#### Respostas
+
+##### 200 OK!
+undefined
+
+##### 400 Bad Request.
+```json
+{
+    "err": "ID inválido."
+}
+```
+```json
+{
+    "err": "Ano de lançamento inválido."
+}
+```
+```json
+{
+    "err": "Preço inválido."
+}
+```
+
+##### 404 Not Found.
+```json
+{
+    "err": "Game não encontrado."
+}
+```
+
+##### 500 Internal Server Erro.
+```json
+{
+    "err": "Erro interno."
+}
+```
