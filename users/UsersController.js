@@ -31,7 +31,7 @@ router.post('/auth', async (req, res) => {
                 jwt.sign({ id: user.id, email: user.email}, JWTSecret, { expiresIn: '2 days' }, (erro, token) => {
                     if (erro) {
                         console.log(erro);
-                        res.status(500).json({ erro: 'Erro interno' });
+                        res.status(500).json({ err: 'Erro interno' });
                     } else if (token) {
                         res.status(200).json({ token })
                     }
@@ -44,10 +44,6 @@ router.post('/auth', async (req, res) => {
         console.log(error);
     }
 
-})
-
-router.get('/testes', Auth, (req, res) => {
-    res.status(500).json({ err: 'Abelha' });
-})
+});
 
 module.exports = router;
