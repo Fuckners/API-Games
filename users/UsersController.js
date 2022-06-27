@@ -26,14 +26,27 @@ router.post('/auth', async (req, res) => {
             if (user.password != password) {
                 res.status(401).json({ err: 'Credenciais inválidas.' });
             } else {
-                res.status(200);
+
+                const HATEOS = [
+                    {
+                        href: 'http://localhost:8080/games',
+                        method: 'GET',
+                        ref: 'get_games'
+                    },
+                    {
+                        href: 'http://localhost:8080/game',
+                        method: 'POST',
+                        ref: 'create_game'
+                    }
+                ]
+
                 //                   payload              palavra chave    tempo para expirar      callback
                 jwt.sign({ id: user.id, email: user.email}, JWTSecret, { expiresIn: '2 days' }, (erro, token) => {
                     if (erro) {
                         console.log(erro);
                         res.status(500).json({ err: 'Erro interno' });
                     } else if (token) {
-                        res.status(200).json({ token })
+                        res.status(200).json({ token, _links: HATEOS })
                     }
                 });
             }
