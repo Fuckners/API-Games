@@ -295,6 +295,7 @@ Responsável por deletar um game específico do database.
 #### Respostas
 
 ##### 200 OK!
+```json
 {
     "_links": [
         {
@@ -309,6 +310,7 @@ Responsável por deletar um game específico do database.
         }
     ]
 }
+```
 
 ##### 400 Bad Request.
 ```json
@@ -330,12 +332,11 @@ Responsável por deletar um game específico do database.
 Responsável por editar games no database.
 
 #### Parametros
-:id - id do game que deseja editar.    
-{
-    "title": "Título do game",
-    "year": Ano de lançamento do game,
-    "price": Preço do game
-}
+:id - id do game que deseja editar.
+
+title: Título do game    
+year: Ano de lançamento do game    
+price: Preço do jogo  
 
 ##### Exemplos
 `/game/4`    
@@ -344,6 +345,7 @@ Responsável por editar games no database.
 #### Respostas
 
 ##### 200 OK!
+```json
 {
     "_links": [
         {
@@ -363,6 +365,7 @@ Responsável por editar games no database.
         }
     ]
 }
+```
 
 ##### 400 Bad Request.
 ```json
