@@ -2,6 +2,7 @@
 
 ## Descrição    
 Exemplo de API RESTful para gestão de games.    
+(Está API não foi feita para ter uma utilidade real, o obejtivo era entender o processo de criação e consumo de uma API.)
 
 ## EndPoints
 
