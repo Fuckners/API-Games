@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApiGames Menu</title>
+</head>
+<body>
+    <h2>Lista de Games</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Lançamento</th>
+                <th>Preço</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="games">
+            
+        </tbody>
+    </table>
+
+    <h2>Novo game</h2>
+    <input type="text" id="title" placeholder="Título"><br>
+    <input type="number" min="1950" id="year" placeholder="Ano de Lançamento"><br>
+    <input type="number" min="0" id="price" placeholder="Preço"><br>
+    <button type="button" onclick="createGame()">Criar</button><br>
+
+    
+    <h2>Editar game</h2>
+    <input type="text" id="id_edit" placeholder="ID do game"><br>
+    <input type="text" id="title_edit" placeholder="Título"><br>
+    <input type="number" min="1950" id="year_edit" placeholder="Ano de Lançamento"><br>
+    <input type="number" min="0" id="price_edit" placeholder="Preço"><br>
+    <button type="button" onclick="editGame()">Editar</button><br>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+    // http://localhost:8080/game
+    const link = 'http://localhost:8080/';
+
+    if (!localStorage.getItem('token')) {
+        location.replace('login.html');
+    }
+
+    const axiosConfig = {
+        headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+    };
+
+    (async function showGames() {
+
+        try {
+            const games = (await axios.get(link + 'games', axiosConfig)).data;
+            const table = document.getElementById('games')
+            for (game of games) {
+                table.innerHTML +=   `<tr data-game="${game.id}">
+                                        <td class="id">${game.id}</td>
+                                        <td class="title">${game.title}</td>
+                                        <td class="year">${game.year}</td>
+                                        <td class="price">${game.price}</td>
+                                        <td>
+                                            <button onclick="showInEdit(this)">Editar</button>
+                                            <button onclick="delGame(this)">Excluir</button>
+                                        </td>
+                                    </tr>`
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    })();
+
+    async function showInEdit(target) {
+        const id = document.getElementById('id_edit');
+        const title = document.getElementById('title_edit');
+        const year = document.getElementById('year_edit');
+        const price = document.getElementById('price_edit');
+        
+        const game = target.parentNode.parentNode.dataset.game
+
+        try {
+            const gameData = (await axios.get(link + 'game/' + game, axiosConfig)).data;
+            id.value = gameData.id;
+            title.value = gameData.title;
+            year.value = gameData.year;
+            price.value = gameData.price;
+
+        } catch (error) {
+            console.log(error);
+        }
+        
+    }
+
+    async function editGame() {
+        const id = document.getElementById('id_edit').value;
+        const title = document.getElementById('title_edit').value;
+        const year = document.getElementById('year_edit').value;
+        const price = document.getElementById('price_edit').value;
+
+        try {
+            const response = await axios.put(link + 'game/' + id, { title, year, price }, axiosConfig)
+            
+            if (response.status == 200) {
+                location.reload();
+            } else {
+                alert('Algo de errado: ' + response.status);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function delGame(target) {
+        const id = target.parentNode.parentNode.dataset.game
+        try {
+            const response = await axios.delete(link + 'game/' + id, axiosConfig)            
+            if (response.status == 200) {
+                location.reload();
+            } else {
+                alert('Algo deu errado: ' + response.status);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function createGame() {
+        const title = document.getElementById('title').value
+        const year = document.getElementById('year').value
+        const price = document.getElementById('price').value
+        
+        try {
+            const response = await axios.post(link + 'game', {title, year, price}, axiosConfig)
+            if (response.status == 200) {
+                location.reload();
+            } else {
+                console.log('Algo deu errado: ' + response.status);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+</script>
+
+</html>
